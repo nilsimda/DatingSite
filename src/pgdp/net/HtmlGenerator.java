@@ -21,6 +21,7 @@ public final class HtmlGenerator {
     private static final String TEMPL_AGE = "%age";
     private static final String TEMPL_NAME = "%name";
     private static final String TEMPL_SEXUAL_ORIENTATION = "%sexualOrientation";
+    private static final String TEMPL_ABOUT_ME = "%aboutMe";
 
     private static final String HTML_TABLE_START = "<table border=\"1px solid black\">"
             + "<tr><td><b>Name</b></td><td><b>Age</b></td><td><b>Sexual Orientation</b></td></tr>";
@@ -43,7 +44,7 @@ public final class HtmlGenerator {
     public String generateProfilePage(DatingPingu dp) {
         return profileTemplate.replace(Map.of(TEMPL_NAME, dp.getName(), TEMPL_AGE, String.valueOf(dp.getAge()),
                 TEMPL_SEXUAL_ORIENTATION, dp.getSexualOrientation(), TEMPL_HOBBIES,
-                dp.getHobbies().stream().collect(Collectors.joining(", "))));
+                dp.getHobbies().stream().collect(Collectors.joining(", ")), TEMPL_ABOUT_ME, dp.getAboutMe()));
     }
 
     /**

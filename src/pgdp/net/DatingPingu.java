@@ -10,8 +10,9 @@ public final class DatingPingu {
     private final String sexualOrientation;
     private final int age;
     private final Set<String> hobbies;
+    private final String aboutMe;
 
-    public DatingPingu(long id, String name, String sexualOrientation, int age, Set<String> hobbies) {
+    public DatingPingu(long id, String name, String sexualOrientation, int age, Set<String> hobbies, String aboutMe) {
         this.id = id;
         this.name = Objects.requireNonNull(name, "name");
         this.sexualOrientation = Objects.requireNonNull(sexualOrientation, "sexualOrientation");
@@ -19,6 +20,7 @@ public final class DatingPingu {
             throw new IllegalArgumentException("age <= 0");
         this.age = age;
         this.hobbies = Objects.requireNonNull(hobbies, "hobbies");
+        this.aboutMe = Objects.requireNonNull(aboutMe, "aboutMe");
     }
 
     public long getId() {
@@ -41,15 +43,19 @@ public final class DatingPingu {
         return hobbies;
     }
 
+    public String getAboutMe() {
+        return aboutMe;
+    }
+
     public String toCsvRow() {
-        return String.format("%s,%s,%s,%s,%s", id, name, sexualOrientation, age,
-                hobbies.stream().collect(Collectors.joining(",", "\"", "\"")));
+        return String.format("%s,%s,%s,%s,%s,\"%s\"", id, name, sexualOrientation, age,
+                hobbies.stream().collect(Collectors.joining(" ")), aboutMe);
     }
 
     public static DatingPingu parse(String csvRow) {
-        String[] parts = csvRow.split(",", 5);
+        String[] parts = csvRow.split(",", 6);
         return new DatingPingu(Long.parseLong(parts[0]), parts[1], parts[2], Integer.parseInt(parts[3]),
-                Set.of(parts[4].substring(1, parts[4].length() - 1).split(",", -1)));
+                Set.of(parts[4].split(" ", -1)), parts[5].substring(1, parts[5].length() - 1));
     }
 
     @Override
