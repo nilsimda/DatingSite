@@ -2,7 +2,7 @@ package pgdp.net;
 
 import java.io.IOException;
 import java.nio.file.Path;
-import java.util.Collection;
+import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
@@ -53,7 +53,7 @@ public final class HtmlGenerator {
      * The request passed to the method is used to fill the form fields with the
      * user's input values
      */
-    public String generateFindPage(SeachRequest request, Collection<DatingPingu> results) {
+    public String generateFindPage(SeachRequest request, List<DatingPingu> results) {
         String table;
         if (results.isEmpty()) {
             table = HTML_TABLE_NO_RESULTS;
