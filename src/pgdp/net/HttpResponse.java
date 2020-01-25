@@ -1,6 +1,6 @@
 package pgdp.net;
 
-public class HttpResponse {
+public final class HttpResponse {
 
     public HttpResponse(HttpStatus status, String body) {
         // TODO

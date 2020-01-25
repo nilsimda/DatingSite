@@ -1,6 +1,6 @@
 package pgdp.net;
 
-public class HttpRequest {
+public final class HttpRequest {
 
     public HttpRequest(String request) {
      // TODO
