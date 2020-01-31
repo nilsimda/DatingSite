@@ -35,10 +35,11 @@ public class PinguDatabase {
             return false;
         }
         try {
-            PrintWriter writer = new PrintWriter(new FileWriter(String.valueOf(dataFile), true));
+            PrintWriter writer = new PrintWriter(new FileWriter(String.valueOf(dataFile)),true);
             writer.println(line);
             writer.close();
             DatingPingu.parse(line);
+            lst.add(datingPingu);
             return true;
         } catch (IOException e) {
             return false;

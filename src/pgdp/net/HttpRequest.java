@@ -6,12 +6,14 @@ import java.util.Map;
 
 public final class HttpRequest {
     String request;
-    boolean hasParameters;
+    boolean hasParameters = false;
 
     public HttpRequest(String request) {
-        if(!request.matches("GET|POST\\s\\S+")){
+        if(!request.matches("(GET|POST) /(\\S+)? HTTP/1.1")){
             throw new IllegalArgumentException("This request does not match the expected form.");
         }
+        if(request.contains("?"))
+            hasParameters = true;
         this.request = request;
     }
 
@@ -33,6 +35,9 @@ public final class HttpRequest {
 
     public Map<String, String> getParameters() {
         Map<String, String> result = new HashMap<>();
+        if(!hasParameters){
+            return result;
+        }
         String substringOfParameter = request.substring(request.indexOf("?")+1, request.lastIndexOf(" "));
         if (substringOfParameter.contains("&")) {
             String[] parameters = substringOfParameter.split("&");
@@ -48,6 +53,8 @@ public final class HttpRequest {
     }
 
     public static void main(String[] args) {
+        String test1 = "/user/100 HTTP/1.1";
+        System.out.println(test1.matches("/user/\\d+ HTTP/1.1"));
         String test = "GET /find?sexualOrientation=any&minAge=19&maxAge=45&hobbies=swimming HTTP/1.1";
         HttpRequest request = new HttpRequest(test);
         System.out.println(request.getMethod());
