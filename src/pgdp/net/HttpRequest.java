@@ -43,7 +43,10 @@ public final class HttpRequest {
             String[] parameters = substringOfParameter.split("&");
             for (String s : parameters) {
                 String[] bothParts = s.split("=");
-                result.put(bothParts[0], bothParts[1]);
+                if(bothParts.length == 2)
+                    result.put(bothParts[0], bothParts[1]);
+                else
+                    result.put(bothParts[0], "");
             }
         } else {
             String[] parameters = substringOfParameter.split("=");
@@ -55,7 +58,7 @@ public final class HttpRequest {
     public static void main(String[] args) {
         String test1 = "/user/100 HTTP/1.1";
         System.out.println(test1.matches("/user/\\d+ HTTP/1.1"));
-        String test = "GET /find?sexualOrientation=any&minAge=19&maxAge=45&hobbies=swimming HTTP/1.1";
+        String test = "GET /find?sexualOrientation=any&minAge=19&maxAge=45&hobbies= HTTP/1.1";
         HttpRequest request = new HttpRequest(test);
         System.out.println(request.getMethod());
         System.out.println(request.getPath());

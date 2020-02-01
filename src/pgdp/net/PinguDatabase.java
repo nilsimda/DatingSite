@@ -1,9 +1,7 @@
 package pgdp.net;
 
-import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
-import java.io.PrintWriter;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.ArrayList;
@@ -23,7 +21,7 @@ public class PinguDatabase {
         }
     }
 
-    boolean add(DatingPingu datingPingu) {
+    synchronized boolean add(DatingPingu datingPingu) {
         String line = datingPingu.toCsvRow();
         boolean alreadyExists = false;
         for (DatingPingu d : lst) {
@@ -47,7 +45,7 @@ public class PinguDatabase {
         }
     }
 
-    Optional<DatingPingu> lookupById(long id) {
+    synchronized Optional<DatingPingu> lookupById(long id) {
         return lst.stream().filter(d -> d.getId() == id).findFirst();
     }
 
@@ -58,7 +56,7 @@ public class PinguDatabase {
         return resultList;
     }
 
-    private static boolean checkHobbies(Set<String> hobbies1, Set<String> hobbies2) {
+    private static synchronized boolean checkHobbies(Set<String> hobbies1, Set<String> hobbies2) {
         for (String s1 : hobbies1) {
             for (String s2 : hobbies2) {
                 if (s1.equals(s2))
