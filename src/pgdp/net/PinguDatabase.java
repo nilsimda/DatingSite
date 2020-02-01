@@ -34,7 +34,7 @@ public class PinguDatabase {
             return false;
         }
         try {
-            FileWriter writer = new FileWriter(String.valueOf(dataFile),true);
+            FileWriter writer = new FileWriter(String.valueOf(dataFile), true);
             writer.append(line).append("\n");
             writer.flush();
             writer.close();

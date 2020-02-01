@@ -131,7 +131,7 @@ public class WebServer {
                         writer.println(new HttpResponse(HttpStatus.NOT_FOUND, ""));
                 } else
                     writer.println(new HttpResponse(HttpStatus.NOT_FOUND, ""));
-            }catch (ArrayIndexOutOfBoundsException | NumberFormatException e){
+            } catch (ArrayIndexOutOfBoundsException | NumberFormatException e) {
                 writer.println(new HttpResponse(HttpStatus.BAD_REQUEST, ""));
             } catch (IllegalArgumentException e) {
                 writer.println(new HttpResponse(HttpStatus.NOT_FOUND, ""));

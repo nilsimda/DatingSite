@@ -1,7 +1,6 @@
 package pgdp.net;
 
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.Map;
 
 public final class HttpRequest {
@@ -9,10 +8,10 @@ public final class HttpRequest {
     boolean hasParameters = false;
 
     public HttpRequest(String request) {
-        if(!request.matches("(GET|POST) /(\\S+)? HTTP/1.1")){
+        if (!request.matches("(GET|POST) /(\\S+)? HTTP/1.1")) {
             throw new IllegalArgumentException("This request does not match the expected form.");
         }
-        if(request.contains("?"))
+        if (request.contains("?"))
             hasParameters = true;
         this.request = request;
     }
@@ -35,15 +34,15 @@ public final class HttpRequest {
 
     public Map<String, String> getParameters() {
         Map<String, String> result = new HashMap<>();
-        if(!hasParameters){
+        if (!hasParameters) {
             return result;
         }
-        String substringOfParameter = request.substring(request.indexOf("?")+1, request.lastIndexOf(" "));
+        String substringOfParameter = request.substring(request.indexOf("?") + 1, request.lastIndexOf(" "));
         if (substringOfParameter.contains("&")) {
             String[] parameters = substringOfParameter.split("&");
             for (String s : parameters) {
                 String[] bothParts = s.split("=");
-                if(bothParts.length == 2)
+                if (bothParts.length == 2)
                     result.put(bothParts[0], bothParts[1]);
                 else
                     result.put(bothParts[0], "");
