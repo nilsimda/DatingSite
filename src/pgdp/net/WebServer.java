@@ -6,6 +6,7 @@ import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.net.ServerSocket;
 import java.net.Socket;
+import java.net.SocketException;
 import java.util.*;
 import java.util.concurrent.Executor;
 import java.util.concurrent.ExecutorService;
@@ -42,31 +43,31 @@ public class WebServer{
                         executorService.submit(runnable2);
                     }
                 } catch (IOException e){
-                    e.printStackTrace();
+                    System.out.println("Webserver shutdown.");
                 }
             };
             executorService.submit(runnable1);
             Scanner scanner = new Scanner(System.in);
-            String addPenguin = scanner.nextLine();
-            if(addPenguin.startsWith("add")){
-                String parameter = addPenguin.substring(4);
-                String [] stats = parameter.split(",");
-                long id = Long.parseLong(stats[0]);
-                String name = stats[1];
-                String sexualOri = stats[2];
-                int age = Integer.parseInt(stats[3]);
-                String [] hobbyArr = stats[4].split(" ");
-                Set<String> hobbies = new HashSet(Arrays.asList(hobbyArr));
-                String aboutMe = stats[5];
-                DatingPingu pingu = new DatingPingu(id, name, sexualOri, age, hobbies, aboutMe);
-                if(webServer.database.add(pingu)){
-                    System.out.println("Penguin succesfully added.");
+            while(!webServer.serverSocket.isClosed()) {
+                String command = scanner.nextLine();
+                if (command.startsWith("add")) {
+                    DatingPingu pingu = DatingPingu.parse(command.substring(4));
+                    if (webServer.database.add(pingu)) {
+                        System.out.println("Penguin succesfully added.");
+                    } else
+                        System.out.println("Penguin was already registered, try again.");
                 }
-                else
-                    System.out.println("Penguin was already registered, try again.");
+                else if(command.equals("shutdown")){
+                    try {
+                        webServer.serverSocket.close();
+                        executorService.shutdown();
+                    } catch (IOException e){
+                        System.out.println("ServerSocket could not be closed.");
+                        return;
+                    }
+                } else
+                    System.out.println("Unknown command.");
             }
-            else
-                System.out.println("Unknown command.");
     }
     public void communication(Socket socket){
         try{
