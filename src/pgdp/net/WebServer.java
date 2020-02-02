@@ -59,14 +59,14 @@ public class WebServer {
                     } else
                         System.out.println("Penguin was already registered, try again.");
                 } catch (NumberFormatException | ArrayIndexOutOfBoundsException e){
-                    System.out.println("Format after add-command was incorrect, try again.");
+                    System.out.println("Format following add-command was incorrect, try again.");
                 }
             } else if (command.equals("shutdown")) {
                 try {
                     webServer.serverSocket.close();
                     executorService.shutdown();
                 } catch (IOException e) {
-                    System.out.println("ServerSocket could not be closed.");
+                    System.out.println("Error while closing the ServerSocket.");
                     return;
                 }
             } else
