@@ -1,7 +1,6 @@
 package pgdp.net;
 
-import java.io.FileWriter;
-import java.io.IOException;
+import java.io.*;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.ArrayList;
@@ -34,12 +33,13 @@ public class PinguDatabase {
             return false;
         }
         try {
-            FileWriter writer = new FileWriter(String.valueOf(dataFile), true);
-            writer.append(line).append("\n");
+            PrintWriter writer = new PrintWriter(new FileWriter(String.valueOf(dataFile), true));
+                writer.append("\n").append(line);
             writer.flush();
             writer.close();
             lst.add(datingPingu);
             return true;
+
         } catch (IOException e) {
             return false;
         }

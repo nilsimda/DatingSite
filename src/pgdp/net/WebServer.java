@@ -22,7 +22,7 @@ public class WebServer {
     public WebServer(PinguDatabase database) {
         try {
 
-            this.database = database;
+            this.database = Objects.requireNonNull(database);
             this.serverSocket = new ServerSocket(port);
             this.htmlGenerator = new HtmlGenerator();
         } catch (IOException e) {
@@ -52,11 +52,15 @@ public class WebServer {
         while (!webServer.serverSocket.isClosed()) {
             String command = scanner.nextLine();
             if (command.startsWith("add")) {
-                DatingPingu pingu = DatingPingu.parse(command.substring(4));
-                if (webServer.database.add(pingu)) {
-                    System.out.println("Penguin succesfully added.");
-                } else
-                    System.out.println("Penguin was already registered, try again.");
+                try {
+                    DatingPingu pingu = DatingPingu.parse(command.substring(4));
+                    if (webServer.database.add(pingu)) {
+                        System.out.println("Penguin succesfully added.");
+                    } else
+                        System.out.println("Penguin was already registered, try again.");
+                } catch (NumberFormatException | ArrayIndexOutOfBoundsException e){
+                    System.out.println("Format after add-command was incorrect, try again.");
+                }
             } else if (command.equals("shutdown")) {
                 try {
                     webServer.serverSocket.close();
